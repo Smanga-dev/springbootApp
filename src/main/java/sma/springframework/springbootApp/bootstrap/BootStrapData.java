@@ -27,6 +27,18 @@ public class BootStrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        Publisher pub = new Publisher();
+
+        pub.setName("MacMillan Books");
+        pub.setAddressLine1("142 Gilfillan Street");
+        pub.setSuburb("Northgate");
+        pub.setProvince("Gauteng");
+        pub.setPostalCode("1966");
+
+
+        publisherRepository.save(pub);
+
+
         Author eric = new Author("Eric", "Evans");
         Book ddd = new Book ("Beginner Bootstrap", "865922134");
 
@@ -35,21 +47,28 @@ public class BootStrapData implements CommandLineRunner {
 
         authorRepository.save(eric);
         bookRepository.save(ddd);
+        publisherRepository.save(pub);
 
         Author sma = new Author("Smangaliso","Mabota");
         Book sss = new Book("Bootstrap Journey - 2020","3578963");
 
+        sma.getBooks().add(sss);
+        sss.getAuthors().add(sma);
+
+        sss.setPublisher(pub);
+        pub.getBooks().add(sss);
+
         authorRepository.save(sma);
         bookRepository.save(sss);
-
-        System.out.println("Started in Bootstrap");
-        System.out.println("Number of Books: "+ bookRepository.count());
-
-        Publisher pub = new Publisher("MacMillan Books", "142 Gilfillan Street", "Northgate", "Gauteng", "1966");
         publisherRepository.save(pub);
 
-        Publisher ppp = new Publisher("CUM Books", "89 Mtere Street", "Fourways", "Gauteng", "2162" );
-        publisherRepository.save(ppp);
+
+        System.out.println("Started in Bootstrap");
+        System.out.println("Publisher number of Books: "+ pub.getBooks().size());
+
+
+
+
 
         System.out.println("Publisher added in Bootstrap");
         System.out.println("Number of publisher: "+ publisherRepository.count());
